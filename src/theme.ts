@@ -1,5 +1,5 @@
-import { createContext, useState, useMemo } from "react";
-import { createTheme } from "@mui/material/styles";
+import { Theme, ThemeOptions, createTheme } from "@mui/material/styles";
+import { createContext, useMemo, useState } from "react";
 
 // color design tokens export
 export const tokens = (mode: string) => ({
@@ -164,8 +164,48 @@ export const themeSettings = (mode: string) => {
             fontSize: 12,
             h1: {
                 fontFamily: ["Source Sans 3", "sans-serif"].join(","),
-                fontSize: 12,
-            }
+                fontSize: 40,
+            },
+            h2: {
+                fontFamily: ["Source Sans 3", "sans-serif"].join(","),
+                fontSize: 32,
+            },
+            h3: {
+                fontFamily: ["Source Sans 3", "sans-serif"].join(","),
+                fontSize: 24,
+            },
+            h4: {
+                fontFamily: ["Source Sans 3", "sans-serif"].join(","),
+                fontSize: 20,
+            },
+            h5: {
+                fontFamily: ["Source Sans 3", "sans-serif"].join(","),
+                fontSize: 16,
+            },
+            h6: {
+                fontFamily: ["Source Sans 3", "sans-serif"].join(","),
+                fontSize: 14,
+            },
         }
     }
+}
+export const ColorModeContext = createContext({
+    toggleColorMode: (): void => { }
+})
+
+
+export const useMode = () => {
+    const [mode, setMode] = useState<string>("dark");
+
+
+    const colorMode = useMemo(
+        () => ({
+            toggleColorMode: () => setMode((prev) => (prev === "light" ? "dark" : "light"))
+        }),
+        [],
+    )
+
+    const theme = useMemo(() => createTheme(themeSettings(mode) as ThemeOptions), [mode]);
+
+    return [theme, colorMode];
 }
